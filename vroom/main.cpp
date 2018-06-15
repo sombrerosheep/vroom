@@ -101,12 +101,21 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdS
   HGLRC glRC = wglCreateContext(deviceContext);
   wglMakeCurrent(deviceContext, glRC);
 
-  ShowWindow(window, nCmdShow);
-    
-  while (GetMessage(&message, window, 0, 0))
+  ShowWindow(window, nCmdShow); 
+  bool running = true;
+
+  while (running)
   {
-    TranslateMessage(&message);
-    DispatchMessage(&message);
+    while (PeekMessage(&message, window, 0, 0, PM_REMOVE))
+    {
+      if (message.message == WM_QUIT)
+      {
+        running = false;
+      }
+
+      TranslateMessage(&message);
+      DispatchMessage(&message);
+    }
   }
 
   wglMakeCurrent(NULL, NULL);
